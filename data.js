@@ -1,4 +1,5 @@
-var data = [
+var family = [
+
 	{
 		"id": 272822514,
 		"firstName": "Billy",
@@ -286,3 +287,5 @@ var data = [
 		"currentSpouse": null
 	}
 ];
+
+initSearch();

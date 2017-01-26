@@ -32,27 +32,14 @@ function initSearch(people){
 		var fullName = prompt("Enter person's Full Name to find next of kin: ");
 		var parsedName = fullName.split(" ");
 		result = getNextOfKin(getUserId(getPersonInfo(parsedName[0], parsedName[1])));
-		if(result === ""){ result = "No next of kin found";}
-	}
-	else if(parseInt(menuChoice) === 5){			
-		var userInput = prompt(message);
-		userInput = userInput.toLowerCase();
-		userInput = userInput.split(/,/);
-		while(userInput.length > 5) { 
-			alert("You have entered 6 inputs"); 
-			userInput = "";
-			userInput = prompt(message);
-			userInput = userInput.split(/,/);
-		}
-		result = searchFilter(userInput);
-		if(result === ""){ result = "Sorry this person is not in our records";}		
+		if(result === ""){ result = "No next of kin found";}	
 	}
 	responder(result);
 }
 
 function userMenu(){
 	var checkChoice = true;
-	var userChoise;
+	var userChoice;
 	var menuString = "Please choose one of the following:\n\n"
 		menuString +="Enter \"1\" to search for a person \n"
 		menuString +="Enter \"2\" to search for a person's decendents \n"
@@ -61,30 +48,13 @@ function userMenu(){
 		menuString +="Enter \"Exit\" to exit Most-Wanted\n"
 		
 	while(checkChoice){
-		userChoise = prompt(menuString);
-		if(userChoise > 0 && userChoise < 6) { return userChoise;}
-		else if(userChoise.toLowerCase() === "exit"){ checkChoice = false;}
+		userChoice = prompt(menuString);
+		if(userChoice > 0 && userChoice < 5) { return userChoice;}
+		else if(userChoice.toLowerCase() === "exit"){ checkChoice = false;}
 	}
 	
 	return "GoodBye!";
 }
-function getUserId(member){
-	return member.id;
-}
-function responder(results){
-	alert(results);
-}
-function sortByAge(array){
-	var j;
-	for (var i = 0; i < array.length; i++){
-        j = i - 1;			
-        while(j >= 0 && new Date(array[j].dob) > new Date(array[j + 1].dob)){
-            swap(array,j);
-            j = j - 1;
-        }
-    }
-}
-
 
 function displayPerson(person){
 	var result =
@@ -106,33 +76,7 @@ function displayPerson(person){
 
 	return result;
 }
-function getPersonInfo(firstname, lastname){
-	var result = "Not Found"; 
-	
-	for (var i = 0; i < family.length; ++i) {
-			if(family[i].firstName.toLowerCase() === firstname.toLowerCase() && family[i].lastName.toLowerCase() === lastname.toLowerCase()){	
-				return family[i];
-			}						
-		}	
-		if(result === "Not Found"){
-			alert("Name Not Found");
-			var fullName = prompt("Please enter full name or enter \"Exit\" to quit");
-			parsedName = fullName.split(" ");
-				if(fullName.toLowerCase() !== "exit"){
-					var result = getPersonInfo(parsedName[0], parsedName[1])
-				}
-			else {
-				result = "Have a nice Day!"
-			}
-		}
 
-	return result;
-}
-function swap(array, index){
-	var holdFirstVariable = array[index + 1];
-    array[index + 1] = array[index];
-    array[index] = holdFirstVariable;
-}
 function getNextOfKin(memberId){
 	var result = "";
 	for(var i = 0; i < family.length; i++){
@@ -162,23 +106,75 @@ function getNextOfKin(memberId){
 			if(family[i].parents[0] !== undefined){
 				result += getGrandparentsNames(family[i].parents[0], family[i].parents[1]) + "\n";
 			}
-		}//End of if
+		}
 	}
 	return result;
 }
-function getDescendants(memberId){
-var result = "";
 
-	for(var i = 0; i < family.length; i++){
-		if(family[i].parents[0] !== undefined){		
-			if(family[i].parents[0] === memberId || family[i].parents[1] === memberId){								
-				result += family[i].firstName + " " + family[i].lastName + "\n";	
-				result += getDescendants(family[i].id);
-			}
+function getGrandparentsNames(parentId1, parentId2){
+	var result = "";
+	var parents = [];
+	var grandParents = [];
+	
+	var j = 0;
+	for(var i = 0; i < family.length; i++){		
+		if(family[i].id === parentId1 || family[i].id === parentId2){								
+			parents[j++] = family[i];
+		}				
+	}	
+	j = 0;
+	for(var i = 0; i < family.length; i++){		
+		if(family[i].id === parents[0].parents[0] || family[i].id === parents[0].parents[1] || family[i].id === parents[1].parents[0] || family[i].id === parents[1].parents[1]){				
+			grandParents[j++] = family[i];
+		}				
+	}
+	if(grandParents.length > 0){
+		sortByAge(grandParents);
+		for(var i = 0; i < grandParents.length; i++){
+			result += grandParents[i].firstName + " " + grandParents[i].lastName + "\n";
 		}
-	}			
+	}
+	else{
+		result = "No listed grandparents \n";
+	}
 	return result;
 }
+
+function getGrandChildren(memberId){
+	var result = "";
+	var children = [];
+	var grandChildren = [];
+	var j = 0;
+	for(var i = 0; i < family.length; i++){
+		if(family[i].parents[0] !== undefined){			
+			if(family[i].parents[0] === memberId || family[i].parents[1] === memberId){			
+				children[j++] = family[i];
+			}
+		}
+	}
+	j = 0;
+	for(var i = 0; i < family.length; i++){		
+		for(var k = 0; k < children.length; k++){
+			if(family[i].parents[0] !== undefined){
+				if(children[k].id === family[i].parents[0] || children[k].id === family[i].parents[1]){			
+					grandChildren[j++] = family[i];
+				}
+			}	
+		}	
+	}
+	if(grandChildren.length > 0){
+		sortByAge(grandChildren);
+		for(var i = 0; i < grandChildren.length; i++){
+			result += grandChildren[i].firstName + " " + grandChildren[i].lastName + "\n";
+		}
+	}
+	else{
+		result = "Does not have grandchildren.\n";
+	}
+	
+	return result;
+}
+
 function getSiblingsNames(parentId, memberId){
 	var result = "";
 	var siblings = [];
@@ -201,6 +197,86 @@ function getSiblingsNames(parentId, memberId){
 		}	
 	return result;
 }
+
+function getChildrenNames(memberId){
+	var result = "";
+	var children = [];
+	var j = 0;
+	for(var i = 0; i < family.length; i++){
+		if(family[i].parents[0] !== undefined){			
+			if(family[i].parents[0] === memberId || family[i].parents[1] === memberId){	
+				children[j++] = family[i];
+			}
+		}
+	}
+	if(children.length > 0){
+		sortByAge(children);
+		for(var i = 0; i < children.length; i++){
+			result += children[i].firstName + " " + children[i].lastName + "\n";
+		}
+	}
+	else{
+		result = "Does not have children.\n";
+	}
+	
+	return result;
+}
+
+function responder(results){
+	// results may be a list of strings, an object, or a single string. 
+	alert(results);
+}
+
+function getPersonInfo(firstname, lastname){
+	var result = "Not Found"; 
+	
+	for (var i = 0; i < family.length; ++i) {
+			if(family[i].firstName.toLowerCase() === firstname.toLowerCase() && family[i].lastName.toLowerCase() === lastname.toLowerCase()){	
+				return family[i];
+			}						
+		}	
+		if(result === "Not Found"){
+			alert("Name Not Found");
+			var fullName = prompt("Please enter full name or enter \"Exit\" to quit");
+			parsedName = fullName.split(" ");
+				if(fullName.toLowerCase() !== "exit"){
+					var result = getPersonInfo(parsedName[0], parsedName[1])
+				}
+			else {
+				result = "Have a nice Day!"
+			}
+		}
+
+	return result;
+}
+
+function getUserId(member){
+	return member.id;
+}
+
+function getDescendants(memberId){
+var result = "";
+
+	for(var i = 0; i < family.length; i++){
+		if(family[i].parents[0] !== undefined){		
+			if(family[i].parents[0] === memberId || family[i].parents[1] === memberId){								
+				result += family[i].firstName + " " + family[i].lastName + "\n";	
+				result += getDescendants(family[i].id);
+			}
+		}
+	}			
+	return result;
+}
+
+function getFamily(){
+	// return list of names of immediate family members
+	for (var key in dataObj) {//Added 
+		if (dataObj.hasOwnProperty(key)) {
+			console.log(key + " -> " + JSON.stringify(dataObj[key]));
+		}
+	}
+}
+
 function getImmediateFamily(memberId){
 	var result = "";
 	for(var i = 0; i < family.length; i++){
@@ -220,7 +296,27 @@ function getImmediateFamily(memberId){
 	return result;
 }
 
+function getCurrentSpouse(spouseId){
+	var result = "";
+	
+	for(var i = 0; i < family.length; i++){
+		if(family[i].id === spouseId){
+			result = family[i].firstName + " " + family[i].lastName + "\n";
+		}
+	}
+	return result;
+}
 
+function getParentsNames(parentId1, parentId2){
+	var result = "";
+	var parents = [];
+	var j = 0;
+	
+	for(var i = 0; i < family.length; i++){			
+		if(family[i].id === parentId1 || family[i].id === parentId2){	
+			parents[j++] = family[i];
+		}
+	}
+}
 
-
-
+// initSearch();

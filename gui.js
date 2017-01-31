@@ -36,19 +36,19 @@ function initSearch(people){
 
 }
 function promptDisplayWelcome(){
-	return prompt("Please Enter your name to start search", "");
+	return prompt("Please Enter your name to start search.").toLowerCase();
 }
 function promptFullName(){
-	return prompt("Please type the Full Name of the person");
+	return prompt("Please type the Full Name of the person.").toLowerCase();
 }
 function promptFamilyMembers(){
-	return prompt("Please type the Full Name of the person to see their family members").toLowerCase();
+	return prompt("Please type the Full Name of the person to see their family members.").toLowerCase();
 }
 function promptForDescendants(){
-	return prompt("Enter person's Full Name to find their decendants.");
+	return prompt("Enter person's Full Name to find their decendants.").toLowerCase();
 }
 function promptNextOfKin(){
-	return prompt("Enter person's Full Name to find next of kin.");
+	return prompt("Enter person's Full Name to find next of kin.").toLowerCase();
 }
 
 function commute(results){
@@ -64,7 +64,7 @@ function displayMenu(){
 		mainMenu +="Choose \"2\" to search for a person's family members \n"
 		mainMenu +="Choose \"3\" to search for a person's decendents \n"
 		mainMenu +="Choose \"4\" to search for a person's next of kin \n"
-		mainMenu +="Choose \"Exit\" to exit Most-Wanted\n"		
+		mainMenu +="Choose \"Exit\" to exit Most-Wanted\n"
 	while(userChoice){
 		userInput = prompt(mainMenu);
 		if(userInput > 0 && userInput < 5) { return userInput;}
@@ -75,7 +75,7 @@ function displayMenu(){
 function displayPersonInfo(person){
 	var result =
 		"\nId Number: " + person.id +
-		"\nFirst Name: " + person.firstName + 
+		"\nFirst Name: " + person.firstName +
 		"\nLast Name: " + person.lastName +
 		"\nGender: " + person.gender +
 		"\nDate Of Birth: " + person.dob +
@@ -83,23 +83,23 @@ function displayPersonInfo(person){
 		"\nWeight: " + person.weight +
 		"\nEye Color: " + person.eyeColor +
 		"\nOccupation: " + person.occupation;
-		if(person.Spouse !== null){	
+		if(person.Spouse !== null){
 		result += "\nCurrent Spouse: " + person.Spouse + " " ;}
-		if(person.parents[0] !== undefined){	
+		if(person.parents[0] !== undefined){
 		result += "\nParents: " + person.parents[0] + " "}
-		if(person.parents[1] !== undefined){	
+		if(person.parents[1] !== undefined){
 		result += " and " + person.parents [1] + " ";}
 
 	return result;
 }
 function getPersonInfo(firstname, lastname){
-	var result = "Not Found"; 
-	
+	var result = "Not Found";
+
 	for (var i = 0; i < family.length; ++i) {
-			if(family[i].firstName.toLowerCase() === firstname.toLowerCase() && family[i].lastName.toLowerCase() === lastname.toLowerCase()){	
+			if(family[i].firstName.toLowerCase() === firstname.toLowerCase() && family[i].lastName.toLowerCase() === lastname.toLowerCase()){
 				return family[i];
-			}						
-		}	
+			}
+		}
 		if(result === "Not Found"){
 			alert("You've searched a name that doesn't match our records");
 			var fullName = prompt("Please enter full name or enter \"Exit\" to quit");
@@ -117,7 +117,7 @@ function getPersonInfo(firstname, lastname){
 
 function getSpouseInfo(spouse){
 	var result = "";
-	
+
 	for(var i = 0; i < family.length; i++){
 		if(family[i].id === spouse){
 			result = family[i].firstName + " " + family[i].lastName + "\n";
@@ -125,6 +125,7 @@ function getSpouseInfo(spouse){
 	}
 	return result;
 }
+
 function getNextOfKin(person){
 	var result = "";
 	for(var i = 0; i < family.length; i++){
@@ -157,8 +158,8 @@ function getSiblingsInfo(people, person){
 	var siblings = [];
 	var j = 0;
 	for(var i = 0; i < family.length; i++){
-		if(family[i].parents[0] !== undefined){			
-			if((family[i].parents[0] === people || family[i].parents[1] === people) && family[i].id !== person){	
+		if(family[i].parents[0] !== undefined){
+			if((family[i].parents[0] === people || family[i].parents[1] === people) && family[i].id !== person){
 				siblings[j++] = family[i];
 			}
 		}
@@ -168,10 +169,10 @@ function getSiblingsInfo(people, person){
 		for(var i = 0; i < siblings.length; i++){
 			result += siblings[i].firstName + " " + siblings[i].lastName + "\n";
 		}
-	}	
+	}
 	else{
 			result += "This person does not have siblings.\n";
-		}	
+		}
 	return result;
 }
 
@@ -180,8 +181,8 @@ function getChildrenInfo(person){
 	var children = [];
 	var j = 0;
 	for(var i = 0; i < family.length; i++){
-		if(family[i].parents[0] !== undefined){			
-			if(family[i].parents[0] === person || family[i].parents[1] === person){	
+		if(family[i].parents[0] !== undefined){
+			if(family[i].parents[0] === person || family[i].parents[1] === person){
 				children[j++] = family[i];
 			}
 		}
@@ -195,7 +196,7 @@ function getChildrenInfo(person){
 	else{
 		result = "This person does not have children.\n";
 	}
-	
+
 	return result;
 }
 function getUser(member){
@@ -206,13 +207,13 @@ function getDescendantsInfo(person){
 var result = "";
 
 	for(var i = 0; i < family.length; i++){
-		if(family[i].parents[0] !== undefined){		
-			if(family[i].parents[0] === person || family[i].parents[1] === person){								
-				result += family[i].firstName + " " + family[i].lastName + "\n";	
+		if(family[i].parents[0] !== undefined){
+			if(family[i].parents[0] === person || family[i].parents[1] === person){
+				result += family[i].firstName + " " + family[i].lastName + "\n";
 				result += getDescendantsInfo(family[i].id);
 			}
 		}
-	}			
+	}
 	return result;
 }
 
@@ -236,17 +237,17 @@ function getImmediateFamily(person){
 }
 
 function getAge(){
-	;
+
 }
 function getHeight(){
-	;
+
 }
 function getWeight(){
-	;
+
 }
 function getEye(){
-	;
+
 }
 function getOccupation(){
-	;
+
 }

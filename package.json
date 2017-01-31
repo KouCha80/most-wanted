@@ -6,41 +6,47 @@
   "scripts": {
     "test": "karma start karma.conf.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/KouCha80/most-wanted.git"
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "browser": true,
+      "node": true,
+      "es6": true,
+      "jasmine": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module"
+    },
+    "rules": {
+      "no-unused-vars": 0,
+      "semi": 1
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/KouCha80/most-wanted.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/KouCha80/most-wanted/issues"
+    },
+    "homepage": "https://github.com/KouCha80/most-wanted#readme",
+    "devDependencies": {
+      "babel-eslint": "^7.1.1",
+      "eslint": "^3.14.1",
+      "eslint-config-defaults": "^9.0.0",
+      "eslint-plugin-react": "^6.9.0",
+      "jasmine-core": "^2.5.2",
+      "karma": "^1.4.0",
+      "karma-chrome-launcher": "^2.0.0",
+      "karma-jasmine": "^1.1.0"
+    }
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/KouCha80/most-wanted/issues"
-  },
-  "homepage": "https://github.com/KouCha80/most-wanted#readme",
   "devDependencies": {
-    "babel-eslint": "^7.1.1",
-    "eslint": "^3.14.1",
-    "eslint-config-defaults": "^9.0.0",
-    "eslint-plugin-react": "^6.9.0",
     "jasmine-core": "^2.5.2",
-    "karma": "^1.4.0",
+    "karma": "^1.4.1",
     "karma-chrome-launcher": "^2.0.0",
     "karma-jasmine": "^1.1.0"
-  },
-  "eslintConfig": {
-   "extends": "eslint:recommended",
-   "env": {
-     "browser": true,
-     "node": true,
-     "es6": true,
-     "jasmine": true
-   },
-   "parserOptions": {
-     "ecmaVersion": 6,
-     "sourceType": "module"
-   },
-   "rules":{
-     "no-unused-vars": 0,
-     "semi": 1
-   }
-}
+  }
 }

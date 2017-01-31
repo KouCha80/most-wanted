@@ -1,41 +1,56 @@
-
 function initSearch(people){
 	alert("Welcome and Thanks for choosing Most-Wanted! This will help search for any person you want to know more infomation about. Please follow all neccessary prompts to do your searches.");
-	var person = prompt("Please Enter your name to start search", "");
-	if (person != null){ }
-	alert("Hello " + person + "! Again, thanks for choosing Most-Wanted. You may now proceed to start your search.");
+	var displayName = promptDisplayWelcome();
+	if (displayName !==null){" ";}
+	alert("Hello " + displayName + "! Again, thanks for choosing Most-Wanted. You may now proceed to start your search.");
+
 	var menuChoice = displayMenu();
 	var result;
 	result = menuChoice;
 	if(parseInt(menuChoice) === 1){
-		var fullName = prompt("Enter a person's Full Name to see their information.");
+		var fullName = promptFullName();
 		var parsedName = fullName.split(" ");
 		result = displayPersonInfo(getPersonInfo(parsedName[0], parsedName[1]));
 	}
 	else if(parseInt(menuChoice) === 2){
-		var fullName = prompt("Enter person's Full Name to see their family members.");
-		var parsedName = fullName.split(" "); 
+		// fullName = prompt("Enter person's Full Name to see their family members.");
+		var immediateFamily = promptFamilyMembers();
+		parsedName = immediateFamily.split(" ");
 		result = getImmediateFamily(getUser(getPersonInfo(parsedName[0], parsedName[1])));
 		if(result === ""){ result = "This person have no family members";}
 	}
 	else if(parseInt(menuChoice) === 3){
-		var fullName = prompt("Enter person's Full Name to find their decendants.");
-		var parsedName = fullName.split(" ");
+		var descendants = promptForDescendants();
+		parsedName = descendants.split(" ");
 		result = getDescendantsInfo(getUser(getPersonInfo(parsedName[0], parsedName[1])));
 		if(result === ""){ result = "This person have no descendants";}
 	}
 	else if(parseInt(menuChoice) === 4){
-		var fullName = prompt("Enter person's Full Name to find next of kin.");
-		var parsedName = fullName.split(" ");
+		var nextOfKin = promptNextOfKin();
+		parsedName = nextOfKin.split(" ");
 		result = getNextOfKin(getUser(getPersonInfo(parsedName[0], parsedName[1])));
-		if(result === ""){ result = "No next of kin found in records.";}	
+		if(result === ""){ result = "No next of kin found in records.";}
 	}
 	commute(result);
 	alert("Your search results has ended, Thank You.");
 
-	
-
 }
+function promptDisplayWelcome(){
+	return prompt("Please Enter your name to start search", "");
+}
+function promptFullName(){
+	return prompt("Please type the Full Name of the person");
+}
+function promptFamilyMembers(){
+	return prompt("Please type the Full Name of the person to see their family members").toLowerCase();
+}
+function promptForDescendants(){
+	return prompt("Enter person's Full Name to find their decendants.");
+}
+function promptNextOfKin(){
+	return prompt("Enter person's Full Name to find next of kin.");
+}
+
 function commute(results){
 	alert(results);
 }
